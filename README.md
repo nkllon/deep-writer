@@ -83,7 +83,9 @@ make show-config      # print resolved MCP config with env placeholders
 ---
 
 ## CC-SDD (Strap Spec Driven Development)
-This repo uses a local sibling installation of CC-SDD from `../cc-sdd`. A thin wrapper script is provided.
+This repo expects the standard CC-SDD installation under `/kiro`. A thin wrapper is provided and will:
+- Prefer `/kiro/tools/cc-sdd/dist/cli.js`
+- Fallback to a sibling checkout at `../cc-sdd/tools/cc-sdd/dist/cli.js` (with a warning)
 
 Usage:
 ```bash
@@ -93,11 +95,12 @@ make cc-sdd-help
 # Run with your preferred agent/template
 make cc-sdd ARGS="--cursor --lang en --dry-run"
 ```
-The wrapper script calls:
+The wrapper script calls (in order of preference):
 ```
-scripts/cc-sdd  # invokes ../cc-sdd/tools/cc-sdd/dist/cli.js
+scripts/cc-sdd  # invokes /kiro/tools/cc-sdd/dist/cli.js
+# fallback: ../cc-sdd/tools/cc-sdd/dist/cli.js
 ```
-Ensure the sibling repo exists and is built.
+Ensure `/kiro` is installed per CC-SDD documentation, or have the sibling repo built for fallback.
 
 ---
 

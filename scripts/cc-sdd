@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Wrapper to invoke CC-SDD CLI from sibling repo
+# Preferred: standard /kiro install
 NODE_BIN="${NODE_BIN:-node}"
-CC_SDD_CLI="/Volumes/lemon/cursor/cc-sdd/tools/cc-sdd/dist/cli.js"
+KIRO_CLI="/kiro/tools/cc-sdd/dist/cli.js"
+SIBLING_CLI="/Volumes/lemon/cursor/cc-sdd/tools/cc-sdd/dist/cli.js"
 
-if [ ! -f "$CC_SDD_CLI" ]; then
-  echo "CC-SDD CLI not found at: $CC_SDD_CLI" >&2
-  echo "Ensure the sibling repo exists at ../cc-sdd and is built." >&2
+if [ -f "$KIRO_CLI" ]; then
+  exec "$NODE_BIN" "$KIRO_CLI" "$@"
+elif [ -f "$SIBLING_CLI" ]; then
+  echo "[warn] /kiro not found; using sibling CC-SDD at $SIBLING_CLI" >&2
+  exec "$NODE_BIN" "$SIBLING_CLI" "$@"
+else
+  echo "CC-SDD CLI not found." >&2
+  echo "Expected at: $KIRO_CLI" >&2
+  echo "Fallback at: $SIBLING_CLI" >&2
   exit 1
 fi
-
-exec "$NODE_BIN" "$CC_SDD_CLI" "$@"
 
 
